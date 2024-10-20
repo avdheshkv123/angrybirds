@@ -2,17 +2,19 @@ package com.angrybirds.chatnchill;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.audio.Music;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class level2 extends ApplicationAdapter {
+public class level2 implements Screen {
+    private Main game;
     private SpriteBatch batch;
     private Texture sunnybg;
     private Texture slingshot;
@@ -27,10 +29,13 @@ public class level2 extends ApplicationAdapter {
     private Texture pausebutton;
     private Sprite sprite;
     private FitViewport viewport;
-    private Music backgroundmusic;
+
+    public level2(Main game){
+        this.game = game;
+    }
 
     @Override
-    public void create() {
+    public void show() {
         batch = new SpriteBatch();
         sunnybg = new Texture("sunnybackground.jpg");
         slingshot = new Texture("slingshot.png");
@@ -43,34 +48,43 @@ public class level2 extends ApplicationAdapter {
         woodenbox = new Texture("woodenbox.jpg");
         glassbox = new Texture("glassbox.png");
         pausebutton = new Texture("pause.png");
-        backgroundmusic = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
-        backgroundmusic.setLooping(true);
-        backgroundmusic.play();
-        viewport = new FitViewport(10,5);
+        viewport = new FitViewport(10.1f,5.2f);
         sprite = new Sprite(sunnybg);
     }
 
     @Override
     public void resize(int width, int height) {
-        super.resize(width, height);
         viewport.update(width,height,true);
     }
 
     @Override
     public void pause() {
-        super.pause();
-        backgroundmusic.pause();
     }
 
     @Override
     public void resume() {
-        super.resume();
-        backgroundmusic.play();
     }
 
     @Override
-    public void render() {
+    public void render(float delta) {
         draw();
+
+        if (Gdx.input.justTouched()) {
+            Vector2 touchPos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+            viewport.unproject(touchPos);
+
+            // Check if the user clicked the pause icon
+            float pausex = 0.17f;
+            float pausey = 4.6f;
+            float pausewidht = 0.4f;
+            float pauseheight = 0.4f;
+
+            if (touchPos.x >= pausex && touchPos.x <= pausex + pausewidht &&
+                touchPos.y >= pausey && touchPos.y <= pausey + pauseheight) {
+                game.setScreen(new pausemenu(game));
+            }
+
+        }
     }
 
     private void draw(){
@@ -174,18 +188,21 @@ public class level2 extends ApplicationAdapter {
         batch.draw(pig2,pig2x,pig2y,pig2width,pig2height);
         batch.draw(pig3,pig3x,pig3y,pig3width,pig3height);
 
-        float pausex = 0.13f;
-        float pausey = 4.5f;
+        float pausex = 0.17f;
+        float pausey = 4.6f;
         float pausewidht = 0.4f;
         float pauseheight = 0.4f;
         batch.draw(pausebutton,pausex,pausey,pausewidht,pauseheight);
         batch.end();
     }
 
+    public void hide(){
+        dispose();
+    }
+
     @Override
     public void dispose() {
         batch.dispose();
         sunnybg.dispose();
-        backgroundmusic.dispose();
     }
 }
