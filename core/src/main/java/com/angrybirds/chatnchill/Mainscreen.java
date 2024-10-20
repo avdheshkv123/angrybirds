@@ -18,13 +18,12 @@ public class Mainscreen implements Screen {
     private Main game;
     private SpriteBatch batch;
     private Texture homescreen;
-    private Texture levelbutton;
+    private Texture htpbutton;
     private Texture exitbutton;
     private Texture playbutton;
     private Texture text;
     private Texture settings;
     private FitViewport viewport;
-    private Music bgmusic;
     private Sprite sprite;
 
     public Mainscreen(Main game) {
@@ -35,15 +34,12 @@ public class Mainscreen implements Screen {
     public void show() {
         batch = new SpriteBatch();
         homescreen = new Texture("home screen.png");
-        levelbutton = new Texture("level.png");
+        htpbutton = new Texture("htp.png");
         exitbutton = new Texture("exit.png");
         playbutton = new Texture("play.png");
         text = new Texture("text.png");
         settings = new Texture("settings.png");
-        bgmusic = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
-        bgmusic.setLooping(true);
-        bgmusic.play();
-        viewport = new FitViewport(10, 5);
+        viewport = new FitViewport(10.1f, 5.2f);
         sprite = new Sprite(homescreen);
     }
 
@@ -56,15 +52,37 @@ public class Mainscreen implements Screen {
             Vector2 touchPos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
             viewport.unproject(touchPos);
 
-            // Check if the user clicked the level button
-            float levelx = 4.2f;
-            float levely = 1.6f;
-            float levelwidth = 1.6f;
-            float levelheight = 1.0f;
+            // Check if the user clicked play button
+            float playx = 4.2f;
+            float playy = 2.6f;
+            float playwidth = 1.6f;
+            float playheight = 1.0f;
 
-            if (touchPos.x >= levelx && touchPos.x <= levelx + levelwidth &&
-                touchPos.y >= levely && touchPos.y <= levely + levelheight) {
+            if (touchPos.x >= playx && touchPos.x <= playx + playwidth &&
+                touchPos.y >= playy && touchPos.y <= playy + playheight) {
                 game.setScreen(new levelselect(game));
+            }
+
+            //check if the user clicked howtoplay button
+            float htpx = 4.2f;
+            float htpy = 1.6f;
+            float htpwidth = 1.6f;
+            float htpheight = 1.0f;
+
+            if (touchPos.x >= htpx && touchPos.x <= htpx + htpwidth &&
+                touchPos.y >= htpy && touchPos.y <= htpy + htpheight) {
+                game.setScreen(new howtoplay(game));
+            }
+
+            //check if the user clicked exit button
+            float exitx = 4.2f;
+            float exity = 0.6f;
+            float exitwidth = 1.6f;
+            float exitheight = 1.0f;
+
+            if(touchPos.x >=exitx && touchPos.x<=exitx+exitwidth && touchPos.y>=exity &&
+                touchPos.y<=exity+exitheight){
+                Gdx.app.exit();
             }
         }
     }
@@ -92,12 +110,12 @@ public class Mainscreen implements Screen {
         float playheight = 1.0f;
         batch.draw(playbutton, playx, playy, playwidth, playheight);
 
-        //level button
-        float levelx = 4.2f;
-        float levely = 1.6f;
-        float levelwidth = 1.6f;
-        float levelheight = 1.0f;
-        batch.draw(levelbutton, levelx, levely, levelwidth, levelheight);
+        //how to play button
+        float htpx = 4.2f;
+        float htpy = 1.6f;
+        float htpwidth = 1.6f;
+        float htpheight = 1.0f;
+        batch.draw(htpbutton, htpx, htpy, htpwidth, htpheight);
 
         //exit button
         float exitx = 4.2f;
@@ -107,7 +125,7 @@ public class Mainscreen implements Screen {
         batch.draw(exitbutton, exitx, exity, exitwidth, exitheight);
 
         //settings button
-        float settingsx = 0.42f;
+        float settingsx = 0.15f;
         float settingsy = 4.44f;
         float settingswidht = 0.5f;
         float settingsheight = 0.5f;
@@ -122,12 +140,10 @@ public class Mainscreen implements Screen {
 
     @Override
     public void pause() {
-        bgmusic.pause();
     }
 
     @Override
     public void resume() {
-        bgmusic.play();
     }
 
     public void hide() {
@@ -138,7 +154,6 @@ public class Mainscreen implements Screen {
     public void dispose() {
         batch.dispose();
         homescreen.dispose();
-        bgmusic.dispose();
     }
 }
 
