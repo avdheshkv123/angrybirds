@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.math.Vector2;
 
-import javax.swing.*;
 
 public class Mainscreen implements Screen {
     private Main game;
@@ -124,12 +123,12 @@ public class Mainscreen implements Screen {
         float exitheight = 1.0f;
         batch.draw(exitbutton, exitx, exity, exitwidth, exitheight);
 
-        //settings button
-        float settingsx = 0.15f;
-        float settingsy = 4.44f;
-        float settingswidht = 0.5f;
-        float settingsheight = 0.5f;
-        batch.draw(settings, settingsx, settingsy, settingswidht, settingsheight);
+//        settings button
+//        float settingsx = 0.15f;
+//        float settingsy = 4.44f;
+//        float settingswidht = 0.5f;
+//        float settingsheight = 0.5f;
+//        batch.draw(settings, settingsx, settingsy, settingswidht, settingsheight);
 
         batch.end();
     }
