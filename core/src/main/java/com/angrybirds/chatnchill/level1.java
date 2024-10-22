@@ -26,6 +26,8 @@ public class level1 implements Screen {
     private Texture glassbox;
     private Texture woodenbox;
     private Texture pausebutton;
+    private Texture losebutton;
+    private Texture winbutton;
     private FitViewport viewport;
     private Sprite sprite;
 
@@ -48,6 +50,8 @@ public class level1 implements Screen {
         woodenbox = new Texture("woodenbox.jpg");
         glassbox = new Texture("glassbox.png");
         pausebutton = new Texture("pause.png");
+        winbutton = new Texture("w.png");
+        losebutton = new Texture("L.png");
         viewport = new FitViewport(10.1f, 5.2f);
         sprite = new Sprite(nightbg);
     }
@@ -84,6 +88,27 @@ public class level1 implements Screen {
                 touchPos.y >= pausey && touchPos.y <= pausey + pauseheight) {
                 game.setScreen(new pausemenu(game));
             }
+
+            //check if the user clicked W button
+            float winx = 8.5f;
+            float winy = 4.5f;
+            float winwidth = 0.5f;
+            float winheight = 0.5f;
+
+            if(touchPos.x>= winx && touchPos.x<=winx+winwidth && touchPos.y>=winy && touchPos.y<=winy+winheight){
+                game.setScreen(new winscreen(game));
+            }
+
+            //check if the user clicked L button
+            float losex = 9.1f;
+            float losey = 4.5f;
+            float losewidth = 0.5f;
+            float loseheight = 0.5f;
+
+            if(touchPos.x>=losex && touchPos.x<=losex+losewidth && touchPos.y>=losey && touchPos.y<=losey+loseheight){
+                game.setScreen(new losescreen(game));
+            }
+
 
         }
     }
@@ -165,11 +190,27 @@ public class level1 implements Screen {
         batch.draw(pig1, pig1x, pig1y, pig1width, pig1height);
         batch.draw(pig2, pig2x, pig2y, pig2width, pig2height);
 
+        //pause button
         float pausex = 0.13f;
         float pausey = 4.6f;
         float pausewidht = 0.4f;
         float pauseheight = 0.4f;
         batch.draw(pausebutton, pausex, pausey, pausewidht, pauseheight);
+
+        //winning button
+        float winx = 8.5f;
+        float winy = 4.5f;
+        float winwidth = 0.5f;
+        float winheight = 0.5f;
+        batch.draw(winbutton,winx,winy,winwidth,winheight);
+
+        //lose button
+        float losex = 9.1f;
+        float losey = 4.5f;
+        float losewidth = 0.5f;
+        float loseheight = 0.5f;
+        batch.draw(losebutton,losex,losey,losewidth,loseheight);
+
         batch.end();
     }
 
