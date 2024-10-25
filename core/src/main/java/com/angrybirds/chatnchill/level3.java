@@ -16,15 +16,16 @@ public class level3 implements Screen {
     private SpriteBatch batch;
     private Texture cloudybg;
     private Texture slingshot;
-    private Texture redbird;
-    private Texture bluebird;
-    private Texture yellowbird;
-    private Texture pig1;
-    private Texture pig2;
-    private Texture pig3;
-    private Texture glassbox;
-    private Texture woodenbox;
-    private Texture steelbox;
+    private bird redbird;
+    private bird bluebird;
+    private bird yellowbird;
+    private pig pig1;
+    private pig pig2;
+    private pig pig3;
+    private pig pig4;
+    private block glassbox;
+    private block woodenbox;
+    private block steelbox;
     private Texture pausebutton;
     private Texture losebutton;
     private Texture winbutton;
@@ -40,16 +41,17 @@ public class level3 implements Screen {
         batch = new SpriteBatch();
         cloudybg = new Texture("cloudy.png");
         slingshot = new Texture("slingshot.png");
-        redbird = new Texture("redbird.png");
-        bluebird = new Texture("bluebird.png");
-        yellowbird = new Texture("yellowbird.png");
-        pig1 = new Texture("pig1.png");
-        pig2 = new Texture("pig2.png");
-        pig3 = new Texture("pig3.png");
-        woodenbox = new Texture("woodenbox.jpg");
-        glassbox = new Texture("glassbox.png");
+        redbird = new redbird(0.85f,1.65f,0.3f,0.3f);
+        bluebird = new bluebird(0.13f,1.05f,0.4f,0.4f);
+        yellowbird = new yellowbird(0.5f,1.05f,0.4f,0.4f);
+        pig1 = new pig1(5.46f,2.33f,0.42f,0.3f);
+        pig2 = new pig2(5.97f,2.2f,0.36f,0.3f);
+        pig3 = new pig3(8.25f,2.07f,0.36f,0.3f);
+        pig4 = new pig2(6.8f,1.7f,0.36f,0.3f);
+        woodenbox = new woodenbox(5.5f,1.15f,0.3f,0.3f);
+        glassbox = new glassbox(5.9f,1.33f,0.5f,0.5f);
+        steelbox = new steelbox(7.4f,1.023f,0.5f,0.5f);
         pausebutton = new Texture("pause.png");
-        steelbox = new Texture("steelbox.png");
         winbutton = new Texture("w.png");
         losebutton = new Texture("L.png");
         viewport = new FitViewport(10.1f,5.2f);
@@ -114,26 +116,17 @@ public class level3 implements Screen {
         float slingheight = 0.8f;
         batch.draw(slingshot,slingshotx,slingshoty,slingwidht,slingheight);
 
-        //redbird dimension and position
-        float rbirdx = slingshotx+0.35f;
-        float rbirdy = slingshoty+slingheight-0.2f;
-        float rbirdwidth = 0.3f;
-        float rbirdheight = 0.3f;
-        batch.draw(redbird,rbirdx,rbirdy,rbirdwidth,rbirdheight);
+        redbird.draw(batch);
+        bluebird.draw(batch);
+        yellowbird.draw(batch);
+        woodenbox.draw(batch);
+        glassbox.draw(batch);
+        steelbox.draw(batch);
+        pig1.draw(batch);
+        pig2.draw(batch);
+        pig3.draw(batch);
+        pig4.draw(batch);
 
-        //yellow bird dimension and position
-        float ybirdx = 0.5f;
-        float ybirdy = 1.05f;
-        float ybirdwidth = 0.4f;
-        float ybirdheight = 0.4f;
-        batch.draw(yellowbird,ybirdx,ybirdy,ybirdwidth,ybirdheight);
-
-        //blue bird dimension and position
-        float bbirdx = 0.13f;
-        float bbirdy = 1.05f;
-        float bbirdwidth = 0.4f;
-        float bbirdheight = 0.4f;
-        batch.draw(bluebird,bbirdx,bbirdy,bbirdwidth,bbirdheight);
 
         //woodenbox dimensions and position
         float woodenboxx = 5.5f;
@@ -156,62 +149,34 @@ public class level3 implements Screen {
         //vertical glassbox
         int no_of_glassboxes = 3;
         for(int i = 0;i<no_of_glassboxes;i++){
-            batch.draw(glassbox,glassboxx,glassboxy+i*(glassboxheight*0.53f),glassboxwidht,glassboxheight);
+            batch.draw(new Texture("glassbox.png"),5.9f,1.33f+i*(0.5f*0.53f),0.5f,0.5f);
         }
 
         //vertical woodenbox
         int no_of_woodenboxes = 4;
         for(int i = 0;i<no_of_woodenboxes;i++){
-            batch.draw(woodenbox,woodenboxx,woodenboxy+i*boxheigt,boxwidht,boxheigt);
+            batch.draw(new Texture("woodenbox.jpg"),woodenboxx,woodenboxy+i*boxheigt,boxwidht,boxheigt);
         }
 
         //horizontal woodenbox
         int no_of_wbox = 7;
         for(int i = 0;i<no_of_wbox;i++){
-            batch.draw(woodenbox,woodenboxx+i*boxwidht,woodenboxy,boxwidht,boxheigt);
+            batch.draw(new Texture("woodenbox.jpg"),woodenboxx+i*boxwidht,woodenboxy,boxwidht,boxheigt);
         }
 
         //horizontal glassbox
         int no_of_gbox = 4;
         for(int i = 0;i<no_of_gbox;i++){
-            batch.draw(glassbox,glassboxx+(glassboxwidht*0.58f)+i*glassboxwidht*0.58f,glassboxy+(boxheigt*0.09f),glassboxwidht,glassboxheight);
+            batch.draw(new Texture("glassbox.png"),glassboxx+(glassboxwidht*0.58f)+i*glassboxwidht*0.58f,glassboxy+(boxheigt*0.09f),glassboxwidht,glassboxheight);
         }
 
         int no_of_box = 4;
         int rows = 3;
         for(int i = 0;i<rows;i++){
             for(int j = 0;j<no_of_box;j++){
-                batch.draw(steelbox,steelboxx+(steelboxwidht*0.58f) + (j*steelboxwidht*0.58f),steelboxy+(steelboxheight*0.09f)+(i*steelboxheight*0.58f),steelboxwidht,steelboxheight);
+                batch.draw(new Texture("steelbox.png"),steelboxx+(steelboxwidht*0.58f) + (j*steelboxwidht*0.58f),steelboxy+(steelboxheight*0.09f)+(i*steelboxheight*0.58f),steelboxwidht,steelboxheight);
             }
         }
-        //pig1 dimension and position
-        float pig1x = 5.46f;
-        float pig1y = 2.33f;
-        float pig1width = 0.42f;
-        float pig1height = 0.3f;
-
-        //pig2 dimesnsion and position
-        float pig2x = 5.97f;
-        float pig2y = 2.2f;
-        float pig2width = 0.36f;
-        float pig2height = 0.3f;
-
-        //pig3 dimension and position
-        float pig3x = 8.25f;
-        float pig3y = 2.07f;
-        float pig3width = 0.34f;
-        float pig3height = 0.34f;
-
-        //pig4 dimesnsion and position
-        float pig4x = 6.8f;
-        float pig4y = 1.7f;
-        float pig4width = 0.36f;
-        float pig4height = 0.3f;
-
-        batch.draw(pig1,pig1x,pig1y,pig1width,pig1height);
-        batch.draw(pig2,pig2x,pig2y,pig2width,pig2height);
-        batch.draw(pig3,pig3x,pig3y,pig3width,pig3height);
-        batch.draw(pig2,pig4x,pig4y,pig4width,pig4height);
 
         float pausex = 0.15f;
         float pausey = 4.66f;
