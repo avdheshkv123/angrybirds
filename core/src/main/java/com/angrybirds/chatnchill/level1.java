@@ -18,13 +18,13 @@ public class level1 implements Screen {
     private SpriteBatch batch;
     private Texture nightbg;
     private Texture slingshot;
-    private Texture redbird;
-    private Texture bluebird;
-    private Texture yellowbird;
-    private Texture pig1;
-    private Texture pig2;
-    private Texture glassbox;
-    private Texture woodenbox;
+    private bird redbird;
+    private bird bluebird;
+    private bird yellowbird;
+    private pig pig1;
+    private pig pig2;
+    private block glassbox;
+    private block woodenbox;
     private Texture pausebutton;
     private Texture losebutton;
     private Texture winbutton;
@@ -42,13 +42,13 @@ public class level1 implements Screen {
         batch = new SpriteBatch();
         nightbg = new Texture("night.png");
         slingshot = new Texture("slingshot.png");
-        redbird = new Texture("redbird.png");
-        bluebird = new Texture("bluebird.png");
-        yellowbird = new Texture("yellowbird.png");
-        pig1 = new Texture("pig1.png");
-        pig2 = new Texture("pig2.png");
-        woodenbox = new Texture("woodenbox.jpg");
-        glassbox = new Texture("glassbox.png");
+        redbird = new redbird(0.85f,1.1f,0.4f,0.4f);
+        bluebird = new bluebird(0.13f,0.42f,0.4f,0.4f);
+        yellowbird = new yellowbird(0.5f,0.42f,0.4f,0.4f);
+        pig1 = new pig1(7.25f,1.68f,0.42f,0.3f);
+        pig2 = new pig2(7.97f,1.27f,0.36f,0.3f);
+        woodenbox = new woodenbox(7.3f,0.49f,0.3f,0.3f);
+        glassbox = new glassbox(7.9f,0.41f,0.5f,0.5f);
         pausebutton = new Texture("pause.png");
         winbutton = new Texture("w.png");
         losebutton = new Texture("L.png");
@@ -129,66 +129,23 @@ public class level1 implements Screen {
         float slingheight = 0.8f;
         batch.draw(slingshot, slingshotx, slingshoty, slingwidht, slingheight);
 
-        //redbird dimension and position
-        float rbirdx = slingshotx + 0.35f;
-        float rbirdy = slingshoty + slingheight - 0.2f;
-        float rbirdwidth = 0.3f;
-        float rbirdheight = 0.3f;
-        batch.draw(redbird, rbirdx, rbirdy, rbirdwidth, rbirdheight);
+        redbird.draw(batch);
+        yellowbird.draw(batch);
+        bluebird.draw(batch);
+        woodenbox.draw(batch);
+        glassbox.draw(batch);
+        pig1.draw(batch);
+        pig2.draw(batch);
 
-        //yellow bird dimension and position
-        float ybirdx = 0.5f;
-        float ybirdy = 0.42f;
-        float ybirdwidth = 0.4f;
-        float ybirdheight = 0.4f;
-        batch.draw(yellowbird, ybirdx, ybirdy, ybirdwidth, ybirdheight);
-
-        //blue bird dimension and position
-        float bbirdx = 0.13f;
-        float bbirdy = 0.42f;
-        float bbirdwidth = 0.4f;
-        float bbirdheight = 0.4f;
-        batch.draw(bluebird, bbirdx, bbirdy, bbirdwidth, bbirdheight);
-
-        //woodenbox dimensions and position
-        float woodenboxx = 7.3f;
-        float woodenboxy = 0.49f;
-        float boxwidht = 0.3f;
-        float boxheigt = 0.3f;
-
-        //glassbox dimensions and position
-        float glassboxx = 7.9f;
-        float glassboxy = 0.41f;
-        float glassboxwidht = 0.5f;
-        float glassboxheight = 0.5f;
-
-        //vertical glassbox
-        int no_of_glassboxes = 3;
-        for (int i = 0; i < no_of_glassboxes; i++) {
-            batch.draw(glassbox, glassboxx, glassboxy + i * (glassboxheight * 0.53f), glassboxwidht, glassboxheight);
-        }
-
-        //vertical woodenbox
         int no_of_woodenboxes = 4;
         for (int i = 0; i < no_of_woodenboxes; i++) {
-            batch.draw(woodenbox, woodenboxx, woodenboxy + i * boxheigt, boxwidht, boxheigt);
+            batch.draw(new Texture("woodenbox.jpg"),7.3f, 0.49f + i * 0.3f, 0.3f, 0.3f);
         }
 
-
-        //pig1 dimension and position
-        float pig1x = 7.25f;
-        float pig1y = 1.68f;
-        float pig1width = 0.42f;
-        float pig1height = 0.3f;
-
-        //pig2 dimesnsion and position
-        float pig2x = 7.97f;
-        float pig2y = 1.27f;
-        float pig2width = 0.36f;
-        float pig2height = 0.3f;
-
-        batch.draw(pig1, pig1x, pig1y, pig1width, pig1height);
-        batch.draw(pig2, pig2x, pig2y, pig2width, pig2height);
+        int no_of_glassboxes = 3;
+        for (int i = 0; i < no_of_glassboxes; i++) {
+            batch.draw(new Texture("glassbox.png"), 7.9f, 0.41f + i * (0.5f * 0.53f), 0.5f, 0.5f);
+        }
 
         //pause button
         float pausex = 0.13f;
