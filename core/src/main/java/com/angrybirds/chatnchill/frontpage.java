@@ -19,6 +19,9 @@ public class frontpage implements Screen {
     private Texture frontpage;
     private FitViewport viewport;
     private Texture clickhere;
+    private Texture Birds;
+    private Texture logo;
+
 
     public frontpage(Main game){
         this.game = game;
@@ -26,8 +29,11 @@ public class frontpage implements Screen {
 
     public void show() {
         batch = new SpriteBatch();
-        frontpage = new Texture("frontpage.jpg");
+        frontpage = new Texture("frontpage7.jpg");
         clickhere = new Texture("clickhere.png");
+        Birds = new Texture("Allbirds.png");
+        logo = new Texture("loggo.png");
+
         viewport = new FitViewport(10, 5.2f);
         sprite = new Sprite(frontpage);
     }
@@ -72,6 +78,17 @@ public class frontpage implements Screen {
         float clickheight = 0.5f;
         batch.draw(clickhere,clickx,clicky,clickwidth,clickheight);
 
+        float x = 3.65f;
+        float y = 0.10f;
+        float width = 6.8f;
+        float height = 4.8f;
+        batch.draw(Birds,x,y,width,height);
+
+        float logox = 0.5f;
+        float logoy = 3.0f;
+        float logowidth = 4.8f;
+        float logoheight = 2.0f;
+        batch.draw(logo,logox,logoy,logowidth,logoheight);
         batch.end();
     }
 
