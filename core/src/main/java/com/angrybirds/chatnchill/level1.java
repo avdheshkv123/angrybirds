@@ -49,6 +49,7 @@ public class level1 implements Screen {
     private Sound click;
     private Sound stretch;
     private Sound release;
+    private Sound woodhit;
     private Vector2 slingshotposition = new Vector2(0.9f,1.1f);
 
 
@@ -85,7 +86,7 @@ public class level1 implements Screen {
         pigs.add(pig2);
 
         woodenbox = new woodenbox(7,1,0.5f,0.5f,1);
-        glassbox = new glassbox(10.9f,0.41f,0.5f,0.5f,2);
+        glassbox = new glassbox(17.9f,0.41f,0.5f,0.5f,2);
         blocks = new ArrayList<>();
         blocks.add(woodenbox);
         blocks.add(glassbox);
@@ -97,6 +98,7 @@ public class level1 implements Screen {
         click = Gdx.audio.newSound(Gdx.files.internal("click.mp3"));
         stretch = Gdx.audio.newSound(Gdx.files.internal("stretch.mp3"));
         release = Gdx.audio.newSound(Gdx.files.internal("release.mp3"));
+        woodhit = Gdx.audio.newSound(Gdx.files.internal("woodenhit.mp3"));
 
     }
 
@@ -163,6 +165,7 @@ public class level1 implements Screen {
 
             if (touchPos.x >= savex && touchPos.x <= savex + savewidht &&
                 touchPos.y >= savey && touchPos.y <= savey + saveheight) {
+                click.play();
                 savegame();
             }
 
@@ -291,6 +294,7 @@ public class level1 implements Screen {
             if (collisionwithbox(currentbird, currentBlock)) {
                 birdVelocity.x *= -0.8f;
                 birdVelocity.y *= 0.8f;
+                woodhit.play(4);
                 blocks.remove(i);
                 currentbird.bouncecount--;
 
@@ -337,7 +341,7 @@ public class level1 implements Screen {
         }
     }
 
-    private boolean collisionwithbox(bird bird, block block){
+    boolean collisionwithbox(bird bird, block block){
         boolean iscollision = bird.x < block.x + block.width &&
             bird.x + bird.width > block.x &&
             bird.y < block.y + block.height &&
@@ -445,6 +449,7 @@ public class level1 implements Screen {
         killsound.dispose();
         stretch.dispose();
         release.dispose();
+        woodhit.dispose();
     }
 }
 
