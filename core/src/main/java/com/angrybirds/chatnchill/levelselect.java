@@ -3,6 +3,7 @@ package com.angrybirds.chatnchill;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,6 +25,7 @@ public class levelselect implements Screen {
     private Texture settings;
     private FitViewport viewport;
     private Sprite sprite;
+    private Sound click;
 
     public levelselect(Main game){
         this.game = game;
@@ -33,8 +35,11 @@ public class levelselect implements Screen {
     public void show() {
         batch = new SpriteBatch();
         bg = new Texture("levelmenu.jpg");
+        bg.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         settings = new Texture("settings.png");
+        settings.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         selectlevel = new Texture("select_level_1.png");
+        selectlevel.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         L1 = new Texture("L1.png");
         L2 = new Texture("L2.png");
         L3 = new Texture("L3.png");
@@ -42,6 +47,7 @@ public class levelselect implements Screen {
         backbutton = new Texture("back.png");
         viewport = new FitViewport(10.1f,5.2f);
         sprite = new Sprite(bg);
+        click = Gdx.audio.newSound(Gdx.files.internal("click.mp3"));
     }
 
     @Override
@@ -73,6 +79,7 @@ public class levelselect implements Screen {
 
             if (touchPos.x >= l1x && touchPos.x <= l1x + l1width &&
                 touchPos.y >= l1y && touchPos.y <= l1y + l1height) {
+                click.play();
                 game.setScreen(new level1(game));
             }
 
@@ -84,6 +91,7 @@ public class levelselect implements Screen {
 
             if (touchPos.x>=l2x && touchPos.x<=l2x+l2width &&
                 touchPos.y>=l2y && touchPos.y<=l2y+l2height){
+                click.play();
                 game.setScreen(new level2(game));
             }
 
@@ -94,6 +102,7 @@ public class levelselect implements Screen {
             float l3height = 0.76f;
             if (touchPos.x>=l3x && touchPos.x<=l3x+l3width &&
                 touchPos.y>=l3y && touchPos.y<=l3y+l3height){
+                click.play();
                 game.setScreen(new level3(game));
             }
 
@@ -105,6 +114,7 @@ public class levelselect implements Screen {
             float backheight = 0.5f;
             if(touchPos.x>=backx && touchPos.x<=backx+backwidht &&
                 touchPos.y>=backy && touchPos.y<=backy+backheight){
+                click.play();
                 game.setScreen(new Mainscreen(game));
             }
 
