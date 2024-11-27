@@ -1,12 +1,11 @@
 package com.angrybirds.chatnchill;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.CpuSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -24,9 +23,12 @@ public class pausemenu implements Screen {
     private Texture retry;
     private Sprite sprite;
     private FitViewport viewport;
+    private Screen currentlevel;
+    private Sound click;
 
-    public pausemenu(Main game){
+    public pausemenu(Main game, Screen currentlevel){
         this.game = game;
+        this.currentlevel = currentlevel;
     }
 
     @Override
@@ -39,7 +41,9 @@ public class pausemenu implements Screen {
         home = new Texture("home.png");
         viewport = new FitViewport(10.1f,5.2f);
         sprite = new Sprite(background);
+        click = Gdx.audio.newSound(Gdx.files.internal("click.mp3"));
     }
+
 
     @Override
     public void render(float delta) {
@@ -50,14 +54,23 @@ public class pausemenu implements Screen {
             viewport.unproject(touchPos);
 
             // Check if the user clicked the resume button in level1
-            float playx = 3.16f;
-            float playy = 1.6f;
-            float playwidth = 0.9f;
-            float playheight = 0.9f;
+            float loadx = 3.16f;
+            float loady = 1.6f;
+            float loadwidth = 0.9f;
+            float loadheight = 0.9f;
 
-            if (touchPos.x >= playx && touchPos.x <= playx + playwidth &&
-                touchPos.y >= playy && touchPos.y <= playy + playheight) {
-                game.setScreen(new level1(game));
+            if (touchPos.x >= loadx && touchPos.x <= loadx + loadwidth &&
+                touchPos.y >= loady && touchPos.y <= loady + loadheight) {
+                click.play();
+                if(currentlevel instanceof level1) {
+                    game.setScreen(new level1(game));
+                }
+                else if(currentlevel instanceof level2){
+                    game.setScreen(new level2(game));
+                }
+                else if(currentlevel instanceof level3){
+                    game.setScreen(new level3(game));
+                }
             }
 
             //check if user clicked retry button in level1
@@ -68,7 +81,16 @@ public class pausemenu implements Screen {
 
             if(touchPos.x>=retryx && touchPos.x<=retryx+retrywidth && touchPos.y>=retryy &&
             touchPos.y<=retryy+retryheight){
-                game.setScreen(new level1(game));
+                click.play();
+                if(currentlevel instanceof level1) {
+                    game.setScreen(new level1(game));
+                }
+                else if(currentlevel instanceof level2){
+                    game.setScreen(new level2(game));
+                }
+                else if(currentlevel instanceof level3){
+                    game.setScreen(new level3(game));
+                }
             }
 
             //check if user clicked home button in level1
@@ -79,20 +101,10 @@ public class pausemenu implements Screen {
 
             if(touchPos.x>=homex && touchPos.x<=homex+homewidth && touchPos.y>=homey &&
                 touchPos.y<=homey+homeheight){
+                click.play();
                 game.setScreen(new Mainscreen(game));
             }
 
-
-            //check if user clicked home button in level2
-            float home2x = 6.02f;
-            float home2y = 1.6f;
-            float home2width = 0.9f;
-            float home2height = 0.93f;
-
-            if(touchPos.x>=home2x && touchPos.x<=home2x+home2width && touchPos.y>=home2y &&
-                touchPos.y<=home2y+home2height){
-                game.setScreen(new Mainscreen(game));
-            }
         }
     }
 
