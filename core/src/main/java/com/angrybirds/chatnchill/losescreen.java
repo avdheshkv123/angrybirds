@@ -2,6 +2,7 @@ package com.angrybirds.chatnchill;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -19,6 +20,7 @@ public class losescreen implements Screen{
     private Texture blurbg;
     private FitViewport viewport;
     private Texture close;
+    private Sound click;
 
     public losescreen(Main game){
         this.game = game;
@@ -32,6 +34,7 @@ public class losescreen implements Screen{
         blurbg = new Texture("blurbackground.jpg");
         viewport = new FitViewport(10.1f, 5.2f);
         sprite = new Sprite(blurbg);
+        click = Gdx.audio.newSound(Gdx.files.internal("click.mp3"));
     }
 
     @Override
@@ -51,6 +54,7 @@ public class losescreen implements Screen{
 
             if (touchPos.x >= closex && touchPos.x <= closex + closewidth &&
                 touchPos.y >= closey && touchPos.y <= closey + closeheight) {
+                click.play();
                 game.setScreen(new levelselect(game));
             }
 
