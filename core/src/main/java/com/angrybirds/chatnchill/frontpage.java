@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import org.w3c.dom.Text;
 
 public class frontpage implements Screen {
     private Main game;
@@ -19,9 +21,9 @@ public class frontpage implements Screen {
     private Texture frontpage;
     private FitViewport viewport;
     private Texture clickhere;
-    private Texture Birds;
-    private Texture logo;
-
+    private Sound click;
+    private boolean isloading = false;
+    private float loadingprog = 0;
 
     public frontpage(Main game){
         this.game = game;
@@ -29,13 +31,12 @@ public class frontpage implements Screen {
 
     public void show() {
         batch = new SpriteBatch();
-        frontpage = new Texture("frontpage7.jpg");
-        clickhere = new Texture("clickhere.png");
-        Birds = new Texture("Allbirds.png");
-        logo = new Texture("loggo.png");
-
+        frontpage = new Texture("frontpage.png");
+        frontpage.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        clickhere = new Texture("continue.png");
         viewport = new FitViewport(10, 5.2f);
         sprite = new Sprite(frontpage);
+        click = Gdx.audio.newSound(Gdx.files.internal("click.mp3"));
     }
 
     @Override
@@ -55,9 +56,16 @@ public class frontpage implements Screen {
 
             if (touchPos.x >= clickx && touchPos.x <= clickx + clickwidth &&
                 touchPos.y >= clicky && touchPos.y <= clicky + clickheight) {
+                click.play();
+                isloading = true;
+            }
+        }
+
+        if(isloading){
+            loadingprog +=delta*35;
+            if(loadingprog>=100){
                 game.setScreen(new Mainscreen(game));
             }
-
         }
     }
 
@@ -67,28 +75,28 @@ public class frontpage implements Screen {
         batch.setProjectionMatrix(viewport.getCamera().combined);
         batch.begin();
 
-        float worldWidth = viewport.getWorldWidth();
-        float worldHeight = viewport.getWorldWidth();
-        batch.draw(frontpage, 0, 0, worldWidth, worldHeight);
+        batch.draw(frontpage, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
 
         //click here text;
-        float clickx = 3.65f;
-        float clicky = 0;
-        float clickwidth = 2.8f;
-        float clickheight = 0.5f;
-        batch.draw(clickhere,clickx,clicky,clickwidth,clickheight);
+        if(!isloading) {
+            float clickx = 4.2f;
+            float clicky = 0;
+            float clickwidth = 1.5f;
+            float clickheight = 0.8f;
+            batch.draw(clickhere, clickx, clicky, clickwidth, clickheight);
+        }
 
-        float x = 3.65f;
-        float y = 0.10f;
-        float width = 6.8f;
-        float height = 4.8f;
-        batch.draw(Birds,x,y,width,height);
+        if(isloading) {
+            float barx = 3.65f;
+            float bary = 0;
+            float barwidth = 2.8f*(loadingprog/100);
+            float barheight = 0.5f;
 
-        float logox = 0.5f;
-        float logoy = 3.0f;
-        float logowidth = 4.8f;
-        float logoheight = 2.0f;
-        batch.draw(logo,logox,logoy,logowidth,logoheight);
+            Texture loadingbar = new Texture("loadingbar.png");
+            batch.draw(loadingbar,barx,bary,barwidth,barheight);
+
+        }
+
         batch.end();
     }
 
