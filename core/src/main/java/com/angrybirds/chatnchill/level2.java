@@ -1,11 +1,9 @@
 package com.angrybirds.chatnchill;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -121,16 +119,20 @@ public class level2 implements Screen {
 
     private void checkgamecondition(){
         if(birds.isEmpty() && !pigs.isEmpty()){
-            losesound.play();
+            losesound.play(0.3f);
             game.setScreen(new losescreen(game));
-        }
-        else if(!birds.isEmpty() && pigs.isEmpty()){
-            winsound.play();
-            game.setScreen(new winscreen(game));
         }
         else if(birds.isEmpty() && pigs.isEmpty()){
             winsound.play();
-            game.setScreen(new winscreen(game));
+            game.setScreen(new winscreen1(game));
+        }
+        else if(birds.size()==1 && pigs.isEmpty()){
+            winsound.play();
+            game.setScreen(new winscreen2(game));
+        }
+        else if(birds.size()==2 && pigs.isEmpty()) {
+            winsound.play();
+            game.setScreen(new winscreen3(game));
         }
     }
 
