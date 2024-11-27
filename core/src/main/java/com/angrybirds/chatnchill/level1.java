@@ -191,13 +191,17 @@ public class level1 implements Screen {
             losesound.play(0.3f);
             game.setScreen(new losescreen(game));
         }
-        else if(!birds.isEmpty() && pigs.isEmpty()){
-            winsound.play();
-            game.setScreen(new winscreen(game));
-        }
         else if(birds.isEmpty() && pigs.isEmpty()){
             winsound.play();
-            game.setScreen(new winscreen(game));
+            game.setScreen(new winscreen1(game));
+        }
+        else if(birds.size()==1 && pigs.isEmpty()){
+            winsound.play();
+            game.setScreen(new winscreen2(game));
+        }
+        else if(birds.size()==2 && pigs.isEmpty()) {
+            winsound.play();
+            game.setScreen(new winscreen3(game));
         }
     }
 
@@ -452,4 +456,3 @@ public class level1 implements Screen {
         woodhit.dispose();
     }
 }
-
