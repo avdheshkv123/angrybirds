@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,6 +25,7 @@ public class Mainscreen implements Screen {
     private Texture settings;
     private FitViewport viewport;
     private Sprite sprite;
+    private Sound click;
 
     public Mainscreen(Main game) {
         this.game = game;
@@ -33,6 +35,7 @@ public class Mainscreen implements Screen {
     public void show() {
         batch = new SpriteBatch();
         homescreen = new Texture("home screen.png");
+        homescreen.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         htpbutton = new Texture("htp.png");
         exitbutton = new Texture("exit.png");
         playbutton = new Texture("play.png");
@@ -40,6 +43,7 @@ public class Mainscreen implements Screen {
         settings = new Texture("settings.png");
         viewport = new FitViewport(10.1f, 5.2f);
         sprite = new Sprite(homescreen);
+        click = Gdx.audio.newSound(Gdx.files.internal("click.mp3"));
     }
 
     @Override
@@ -59,6 +63,7 @@ public class Mainscreen implements Screen {
 
             if (touchPos.x >= playx && touchPos.x <= playx + playwidth &&
                 touchPos.y >= playy && touchPos.y <= playy + playheight) {
+                click.play();
                 game.setScreen(new levelselect(game));
             }
 
@@ -70,6 +75,7 @@ public class Mainscreen implements Screen {
 
             if (touchPos.x >= htpx && touchPos.x <= htpx + htpwidth &&
                 touchPos.y >= htpy && touchPos.y <= htpy + htpheight) {
+                click.play();
                 game.setScreen(new howtoplay(game));
             }
 
@@ -81,6 +87,7 @@ public class Mainscreen implements Screen {
 
             if(touchPos.x >=exitx && touchPos.x<=exitx+exitwidth && touchPos.y>=exity &&
                 touchPos.y<=exity+exitheight){
+                click.play();
                 Gdx.app.exit();
             }
         }
