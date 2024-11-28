@@ -79,6 +79,18 @@ public class Mainscreen implements Screen {
                 game.setScreen(new howtoplay(game));
             }
 
+            //check if the user clicked settings button
+            float settingsx = 0.15f;
+            float settingsy = 4.44f;
+            float settingswidht = 0.5f;
+            float settingsheight = 0.5f;
+
+            if(touchPos.x>=settingsx && touchPos.x<=settingsx+settingswidht && touchPos.y>=settingsy
+            && touchPos.y<=settingsy+settingsheight){
+                click.play();
+                game.setScreen(new Settings(game));
+            }
+
             //check if the user clicked exit button
             float exitx = 4.2f;
             float exity = 0.6f;
@@ -130,12 +142,12 @@ public class Mainscreen implements Screen {
         float exitheight = 1.0f;
         batch.draw(exitbutton, exitx, exity, exitwidth, exitheight);
 
-//        settings button
-//        float settingsx = 0.15f;
-//        float settingsy = 4.44f;
-//        float settingswidht = 0.5f;
-//        float settingsheight = 0.5f;
-//        batch.draw(settings, settingsx, settingsy, settingswidht, settingsheight);
+//      settings button
+        float settingsx = 0.15f;
+        float settingsy = 4.44f;
+        float settingswidht = 0.5f;
+        float settingsheight = 0.5f;
+        batch.draw(settings, settingsx, settingsy, settingswidht, settingsheight);
 
         batch.end();
     }
