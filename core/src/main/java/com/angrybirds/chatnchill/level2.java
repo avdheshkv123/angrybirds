@@ -1,9 +1,11 @@
 package com.angrybirds.chatnchill;
 
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -51,6 +53,7 @@ public class level2 implements Screen {
     private Sound stretch;
     private Sound release;
     private Sound woodhit;
+    private int launchbirdcount = 0;
     private Vector2 slingshotposition = new Vector2(0.9f,1.1f);
 
     public level2(Main game){
@@ -91,7 +94,7 @@ public class level2 implements Screen {
         blocks.add(woodenbox);
         blocks.add(glassbox);
         createtower();
-
+        launchbirdcount = 0;
         killsound = Gdx.audio.newSound(Gdx.files.internal("killsound.mp3"));
         losesound = Gdx.audio.newSound(Gdx.files.internal("losesound.mp3"));
         winsound = Gdx.audio.newSound(Gdx.files.internal("winsound.mp3"));
@@ -122,17 +125,53 @@ public class level2 implements Screen {
             losesound.play(0.3f);
             game.setScreen(new losescreen(game));
         }
-        else if(birds.isEmpty() && pigs.isEmpty()){
+        else if(!birds.isEmpty() && pigs.isEmpty()){
             winsound.play();
-            game.setScreen(new winscreen1(game));
+            if(launchbirdcount == 1) {
+                game.setScreen(new winscreen3(game));
+            }
+            else if(launchbirdcount == 2){
+                game.setScreen(new winscreen2(game));
+            }
+            else if(launchbirdcount == 3){
+                game.setScreen(new winscreen1(game));
+            }
         }
-        else if(birds.size()==1 && pigs.isEmpty()){
-            winsound.play();
-            game.setScreen(new winscreen2(game));
-        }
-        else if(birds.size()==2 && pigs.isEmpty()) {
-            winsound.play();
-            game.setScreen(new winscreen3(game));
+    }
+
+    private void checkPigSupport(float delta) {
+        for (int i = pigs.size() - 1; i >= 0; i--) {
+            pig currentPig = pigs.get(i);
+            boolean hasSupport = false;
+
+            // Check for support from blocks
+            for (block currentBlock : blocks) {
+                if (currentPig.x + currentPig.width > currentBlock.x &&
+                    currentPig.x < currentBlock.x + currentBlock.width &&
+                    currentPig.y > currentBlock.y &&
+                    currentPig.y - currentBlock.y <= 1.1f) {
+                    hasSupport = true;
+                    break;
+                }
+            }
+
+            if (!hasSupport) {
+                currentPig.isfalling = true;
+            } else {
+                currentPig.isfalling = false;
+                currentPig.velocity.y = 0; // Stop downward motion
+            }
+
+            if (currentPig.isfalling) {
+                currentPig.velocity.y += gravity * delta; // Apply gravity
+                currentPig.y += currentPig.velocity.y * delta; // Update pig's position
+
+                // Check if the pig hits the ground
+                if (currentPig.y <= 0.4f) {
+                    pigs.remove(i); // Remove the pig
+                    killsound.play(); // Play the kill sound
+                }
+            }
         }
     }
 
@@ -266,6 +305,7 @@ public class level2 implements Screen {
         isBirdReleased = false;
         isTrajectoryVisible = false;
         isdragging = false;
+        launchbirdcount++;
         if (!birds.isEmpty()) {
             bird nextBird = birds.get(0);
             nextBird.x = 0.76f;
@@ -341,6 +381,7 @@ public class level2 implements Screen {
 
 
         checkgamecondition();
+        checkPigSupport(delta);
 
         if(isBirdReleased){
             updateBirdPosition(delta);
