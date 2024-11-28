@@ -166,12 +166,6 @@ public class levelselect implements Screen {
         float l4height = 0.73f;
         batch.draw(L4,l4x,l4y,l4width,l4height);
 
-//        settings button
-//        float settingsx = 9.3f;
-//        float settingsy = 4.5f;
-//        float settingswidht = 0.5f;
-//        float settingsheight = 0.5f;
-//        batch.draw(settings,settingsx,settingsy,settingswidht,settingsheight);
 
         //back button
         float backx = 0.2f;
