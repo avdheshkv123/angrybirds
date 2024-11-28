@@ -50,6 +50,7 @@ public class level1 implements Screen {
     private Sound stretch;
     private Sound release;
     private Sound woodhit;
+    private int launchbirdcount = 0;
     private Vector2 slingshotposition = new Vector2(0.9f,1.1f);
 
 
@@ -99,6 +100,7 @@ public class level1 implements Screen {
         stretch = Gdx.audio.newSound(Gdx.files.internal("stretch.mp3"));
         release = Gdx.audio.newSound(Gdx.files.internal("release.mp3"));
         woodhit = Gdx.audio.newSound(Gdx.files.internal("woodenhit.mp3"));
+        launchbirdcount = 0;
 
     }
 
@@ -177,7 +179,7 @@ public class level1 implements Screen {
         }
 
         checkgamecondition();
-
+        checkPigSupport(delta);
         // Draw trajectory if dragging
         if (isTrajectoryVisible) {
             drawTrajectory();
@@ -186,24 +188,31 @@ public class level1 implements Screen {
     }
 
 
-    private void checkgamecondition(){
-        if(birds.isEmpty() && !pigs.isEmpty()){
+    private void checkgamecondition() {
+        if (birds.isEmpty() && !pigs.isEmpty()) {
             losesound.play(0.3f);
             game.setScreen(new losescreen(game));
+            return;
         }
-        else if(birds.isEmpty() && pigs.isEmpty()){
+
+        // Check if all pigs are cleared
+        if (pigs.isEmpty()) {
             winsound.play();
-            game.setScreen(new winscreen1(game));
-        }
-        else if(birds.size()==1 && pigs.isEmpty()){
-            winsound.play();
-            game.setScreen(new winscreen2(game));
-        }
-        else if(birds.size()==2 && pigs.isEmpty()) {
-            winsound.play();
-            game.setScreen(new winscreen3(game));
+
+            if (launchbirdcount == 1 && birds.isEmpty()) {
+                // Last bird kills all pigs (perfect score)
+                game.setScreen(new winscreen1(game));
+            } else if (launchbirdcount == 1) {
+                // First bird kills all pigs
+                game.setScreen(new winscreen3(game));
+            } else if (launchbirdcount == 2) {
+                // Two birds used to kill all pigs
+                game.setScreen(new winscreen2(game));
+            }
+
         }
     }
+
 
     private void handleinput(){
         if (Gdx.input.isTouched()) {
@@ -246,6 +255,64 @@ public class level1 implements Screen {
 
     }
 
+    private void checkPigSupport(float delta) {
+        for (int i = pigs.size() - 1; i >= 0; i--) {
+            pig currentPig = pigs.get(i);
+            boolean hasSupport = false;
+
+            // Check for support from blocks
+            for (block currentBlock : blocks) {
+                if (currentPig.x + currentPig.width > currentBlock.x &&
+                    currentPig.x < currentBlock.x + currentBlock.width &&
+                    currentPig.y > currentBlock.y &&
+                    currentPig.y - currentBlock.y <= 1.1f) { // Adjusted tolerance for support
+                    hasSupport = true;
+                    break;
+                }
+            }
+
+            if (!hasSupport) {
+                currentPig.isfalling = true;
+            } else {
+                currentPig.isfalling = false;
+                currentPig.velocity.y = 0; // Stop downward motion
+            }
+
+            if (currentPig.isfalling) {
+                // Apply gravity and update pig's position
+                currentPig.velocity.y += gravity * delta;
+                currentPig.y += currentPig.velocity.y * delta;
+
+                // Check for collisions with blocks below
+                for (block currentBlock : blocks) {
+                    if (currentPig.x + currentPig.width > currentBlock.x &&
+                        currentPig.x < currentBlock.x + currentBlock.width &&
+                        currentPig.y > currentBlock.y &&
+                        currentPig.y + currentPig.velocity.y * delta <= currentBlock.y + currentBlock.height) {
+                        // Settle the pig on top of the block
+                        currentPig.y = currentBlock.y + currentBlock.height;
+                        currentPig.isfalling = false;
+                        currentPig.velocity.y = 0;
+                        hasSupport = true;
+                        break;
+                    }
+                }
+
+                // If pig hits the ground
+                if (!hasSupport && currentPig.y <= 0.4f) {
+                    currentPig.y = 0.4f; // Settle on the ground
+                    currentPig.isfalling = false;
+                    currentPig.velocity.y = 0;
+                    pigs.remove(i); // Remove the pig
+                    killsound.play(); // Play the kill sound
+                }
+            }
+        }
+    }
+
+
+
+
     private void drawTrajectory() {
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -260,8 +327,10 @@ public class level1 implements Screen {
 
             for (int i = 0; i < dots; i++) {
                 float t = i * gapbetweendots;
+
                 float nextX = simulatedPosition.x + simulatedVelocity.x * t;
                 float nextY = simulatedPosition.y + simulatedVelocity.y * t + 0.5f * gravity * t * t;
+
 
                 shapeRenderer.circle(nextX,nextY,0.05f);
             }
@@ -336,6 +405,7 @@ public class level1 implements Screen {
         isBirdReleased = false;
         isTrajectoryVisible = false;
         isdragging = false;
+        launchbirdcount++;
         if (!birds.isEmpty()) {
             bird nextBird = birds.get(0);
             nextBird.x = 0.69f;
@@ -456,3 +526,4 @@ public class level1 implements Screen {
         woodhit.dispose();
     }
 }
+
