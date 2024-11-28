@@ -49,10 +49,10 @@ public class frontpage implements Screen {
             viewport.unproject(touchPos);
 
 
-            float clickx = 3.65f;
+            float clickx = 4.2f;
             float clicky = 0;
-            float clickwidth = 2.8f;
-            float clickheight = 0.5f;
+            float clickwidth = 1.5f;
+            float clickheight = 0.8f;
 
             if (touchPos.x >= clickx && touchPos.x <= clickx + clickwidth &&
                 touchPos.y >= clicky && touchPos.y <= clicky + clickheight) {
