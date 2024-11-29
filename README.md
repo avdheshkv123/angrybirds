@@ -1,23 +1,80 @@
-# Angry Birds Game (Java)
+# Angry Birds-Inspired Game
 
 ## Overview
-This project is a Java-based implementation of the popular **Angry Birds** game. The game includes features like launching birds, interacting with obstacles, defeating pigs and selecting different levels. We are developing this project collaboratively as a two-member team.
+This game is inspired by the **Angry Birds** series and implemented using **Object-Oriented Programming (OOP)** principles with a focus on good coding practices. It features basic gameplay mechanics, serialization for saving game states, and engaging components like multiple levels, birds, pigs, and destructible structures.
 
-## Team Members
-- Avdhesh Kumar Verma (2023158)
-- Divyank (2023206)
+### Basic Gameplay:
+- Finite birds are available to shoot at a structure containing pigs.
+- Drag and aim birds from the catapult. The trajectory is determined by the angle and speed.
+- Structures are made of materials like wood, glass, and steel, which break based on hits.
+- Collapsing structures deal cascading hits to blocks or pigs below.
+- **Win a level** by eliminating all pigs. **Lose** if you run out of birds.
+- **Levels:** 3 distinct levels with unique structures, pigs, and birds.
+
+---
 
 ## Game Features
-- **Game Levels**: The game includes different levels (TBD), each with unique challenges.
-- **Bird Mechanics**: Players can launch different birds, each with unique attributes (color, size, etc.), to defeat the pigs.
-- **Dynamic Environment**: Weather conditions like sunny, night, and dusty.
-- **Slingshot Mechanics**: Realistic physics for launching birds at pigs.
-- **Game Controls**: Options to resume, pause, and exit the game.
+### Levels
+Play through multiple levels with varying difficulty.
 
-## UML Diagram
-The design follows the UML diagram, which includes the following key classes:
-- `Game`: Manages the game flow.
-- `Level`: Represents different game levels.
-- `Bird`: An abstract class representing various bird types with attributes like color, size, and shape.
-- `Environment`: Handles game environments like weather and time of day.
-- `Pigs`: Enemy objects that players aim to destroy.
+### Game Mechanics
+Launch birds with realistic physics to defeat the pigs.
+
+### Menus
+- **Front Page:** Displays a button to start the game, which then initiates a loading sequence.
+- **How to Play:** Learn the basic game mechanics.
+- **Pause Menu:** Pause the game, resume, or exit at any point.
+- **Main Screen:** Options for "Play," "How to Play," and "Exit."
+- **Winning/Losing Screens:** Displayed when a player wins or loses a level.
+- **Level Select:** Choose which level to play.
+
+### JUnit Testing
+Includes unit tests to ensure functionality, readability, and correctness of code components.
+
+### Serialization
+Features to save and load the game state.
+
+---
+
+## How to Play
+1. **Start the Game:** Launch the game from the start menu.
+2. **Select a Level:** Pick a level to start playing.
+3. **Launch Birds:** Use the slingshot to launch birds at the pigs.
+4. **Complete Levels:** Win levels by defeating all pigs, or lose if you run out of birds.
+
+---
+
+## Setup & Installation
+1. Open the project in your preferred Java IDE (e.g., IntelliJ IDEA or Eclipse).
+2. Ensure **Java 8 or above** is installed on your system.
+3. Compile and run the project.
+
+---
+
+## Team Members & Contributions
+
+### **1. Avdhesh Kumar Verma (2023158)**
+**Role:** Game levels and core functionality.
+
+**Contributions:**
+- Level 1, Level 2, Level 3.
+- Birds: Redbird, Bluebird, Yellowbird.
+- Structures: Woodenbox, Glassbox, Steelbox.
+- Level select menu.
+- Main game logic.
+- Main screen interface.
+- JUnit Testing.
+
+---
+
+### **2. Divyank (2023206)**
+**Role:** User interface development and game state management.
+
+**Contributions:**
+- Winning screen and losing screen.
+- Pig types: Pig1, Pig2, Pig3.
+- Block collisions and hits.
+- Serialization implementation.
+- Pause menu.
+- Front page interface.
+- "How to Play" section.
